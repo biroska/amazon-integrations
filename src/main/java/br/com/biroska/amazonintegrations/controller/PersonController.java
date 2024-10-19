@@ -1,9 +1,9 @@
 package br.com.biroska.amazonintegrations.controller;
 
-import br.com.biroska.amazonintegrations.person.service.ContactService;
-import br.com.biroska.amazonintegrations.person.service.PersonService;
 import br.com.biroska.amazonintegrations.person.model.Contact;
 import br.com.biroska.amazonintegrations.person.model.Person;
+import br.com.biroska.amazonintegrations.person.service.ContactService;
+import br.com.biroska.amazonintegrations.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,21 +25,21 @@ public class PersonController {
 
     @PostMapping
     public Person savePerson(@RequestBody Person person) {
-        return personService.save( person );
+        return personService.save(person);
     }
 
     @PutMapping
     public Person updatePerson(@RequestBody Person person) {
-        return personService.update( person );
+        return personService.update(person);
     }
 
-    @PutMapping("/{personId}/contact")
-    public Contact updatePersonContact(@RequestBody Contact contact) {
-        return contactService.update( contact );
+    @PostMapping("/{personId}/contact")
+    public List<Contact> updatePersonContact(@PathVariable String personId, @RequestBody Contact contact) {
+        return contactService.addContact(personId, contact);
     }
 
     @DeleteMapping("/{personId}")
     public void deletePerson(@PathVariable String personId) {
-        personService.delete( personId );
+        personService.delete(personId);
     }
 }

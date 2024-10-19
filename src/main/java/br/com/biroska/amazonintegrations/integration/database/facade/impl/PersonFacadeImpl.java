@@ -1,9 +1,9 @@
 package br.com.biroska.amazonintegrations.integration.database.facade.impl;
 
+import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacade;
+import br.com.biroska.amazonintegrations.integration.database.model.ContactEntity;
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
 import br.com.biroska.amazonintegrations.integration.database.repository.PersonRepository;
-import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacade;
-import com.jcabi.aspects.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,6 @@ public class PersonFacadeImpl implements PersonFacade {
     private final PersonRepository repository;
 
     @Override
-    @Loggable
     public List<PersonEntity> findAll() {
         return repository.findAll();
     }
@@ -41,5 +40,19 @@ public class PersonFacadeImpl implements PersonFacade {
         repository.deleteById(personId);
 
         return Boolean.TRUE;
+    }
+
+    @Override
+    public PersonEntity addContact(String personId, ContactEntity contactEntity) {
+
+        Optional<PersonEntity> personEntity = repository.findById( personId );
+
+        if (personEntity.isPresent()){
+            PersonEntity person = personEntity.get();
+            person.getContacts().add( contactEntity );
+
+            return this.save( person );
+        }
+        return null;
     }
 }

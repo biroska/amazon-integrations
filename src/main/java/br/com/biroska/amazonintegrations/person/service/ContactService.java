@@ -2,9 +2,11 @@ package br.com.biroska.amazonintegrations.person.service;
 
 import br.com.biroska.amazonintegrations.person.model.Contact;
 
+import java.util.List;
+
 public interface ContactService {
 
-    Contact save(Contact contact);
+    List<Contact> addContact(String personId, Contact contact);
 
     Contact update(Contact contact);
 

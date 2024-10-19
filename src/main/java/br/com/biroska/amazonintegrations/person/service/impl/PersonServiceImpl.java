@@ -3,9 +3,8 @@ package br.com.biroska.amazonintegrations.person.service.impl;
 import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacade;
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
 import br.com.biroska.amazonintegrations.person.adapter.PersonAdapter;
-import br.com.biroska.amazonintegrations.person.service.PersonService;
 import br.com.biroska.amazonintegrations.person.model.Person;
-import com.jcabi.aspects.Loggable;
+import br.com.biroska.amazonintegrations.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class PersonServiceImpl implements PersonService {
     private final PersonFacade service;
 
     @Override
-    @Loggable(Loggable.DEBUG)
     public List<Person> findAll() {
         List<PersonEntity> persons = service.findAll();
 
