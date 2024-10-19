@@ -1,8 +1,8 @@
-package br.com.biroska.amazonintegrations.integration.database.service.impl;
+package br.com.biroska.amazonintegrations.integration.database.facade.impl;
 
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
 import br.com.biroska.amazonintegrations.integration.database.repository.PersonRepository;
-import br.com.biroska.amazonintegrations.integration.database.service.PersonService;
+import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacade;
 import com.jcabi.aspects.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class PersonServiceImpl implements PersonService {
+public class PersonFacadeImpl implements PersonFacade {
 
     private final PersonRepository repository;
 

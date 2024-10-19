@@ -1,10 +1,10 @@
-package br.com.biroska.amazonintegrations.integration.database.service;
+package br.com.biroska.amazonintegrations.integration.database.facade;
 
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
 
 import java.util.List;
 
-public interface PersonService {
+public interface PersonFacade {
 
     PersonEntity save(PersonEntity person);
 

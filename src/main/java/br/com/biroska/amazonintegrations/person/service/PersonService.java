@@ -1,10 +1,10 @@
-package br.com.biroska.amazonintegrations.person.facade;
+package br.com.biroska.amazonintegrations.person.service;
 
 import br.com.biroska.amazonintegrations.person.model.Person;
 
 import java.util.List;
 
-public interface PersonFacade {
+public interface PersonService {
 
     Person save(Person person);
 

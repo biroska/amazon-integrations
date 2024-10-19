@@ -1,9 +1,9 @@
-package br.com.biroska.amazonintegrations.person.facade.impl;
+package br.com.biroska.amazonintegrations.person.service.impl;
 
+import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacade;
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
-import br.com.biroska.amazonintegrations.integration.database.service.PersonService;
 import br.com.biroska.amazonintegrations.person.adapter.PersonAdapter;
-import br.com.biroska.amazonintegrations.person.facade.PersonFacade;
+import br.com.biroska.amazonintegrations.person.service.PersonService;
 import br.com.biroska.amazonintegrations.person.model.Person;
 import com.jcabi.aspects.Loggable;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +13,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PersonFacadeImpl implements PersonFacade {
+public class PersonServiceImpl implements PersonService {
 
-    private final PersonService service;
+    private final PersonFacade service;
 
     @Override
     @Loggable(Loggable.DEBUG)
