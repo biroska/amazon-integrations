@@ -4,6 +4,7 @@ import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacad
 import br.com.biroska.amazonintegrations.integration.database.model.ContactEntity;
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
 import br.com.biroska.amazonintegrations.integration.database.repository.PersonRepository;
+import br.com.biroska.amazonintegrations.logging.LogMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +18,19 @@ public class PersonFacadeImpl implements PersonFacade {
     private final PersonRepository repository;
 
     @Override
+    @LogMethod
     public List<PersonEntity> findAll() {
         return repository.findAll();
     }
 
     @Override
+    @LogMethod
     public PersonEntity save(PersonEntity person) {
         return repository.save( person );
     }
 
     @Override
+    @LogMethod
     public PersonEntity update(PersonEntity person) {
 
         Optional<PersonEntity> personEntity = repository.findById(person.getId());
@@ -36,6 +40,7 @@ public class PersonFacadeImpl implements PersonFacade {
     }
 
     @Override
+    @LogMethod
     public Boolean delete(String personId) {
         repository.deleteById(personId);
 
@@ -43,6 +48,7 @@ public class PersonFacadeImpl implements PersonFacade {
     }
 
     @Override
+    @LogMethod
     public PersonEntity addContact(String personId, ContactEntity contactEntity) {
 
         Optional<PersonEntity> personEntity = repository.findById( personId );
