@@ -1,13 +1,12 @@
 package br.com.biroska.amazonintegrations.controller;
 
+import br.com.biroska.amazonintegrations.integration.aws.sqs.SqsMessageService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import br.com.biroska.amazonintegrations.person.model.Contact;
 import br.com.biroska.amazonintegrations.person.model.Person;
 import br.com.biroska.amazonintegrations.person.service.ContactService;
 import br.com.biroska.amazonintegrations.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +20,8 @@ public class PersonController {
 
     private final ContactService contactService;
 
+    private final SqsMessageService sqsService;
+
     @LogMethod
     @GetMapping
     public List<Person> listPerson() {
@@ -30,6 +31,7 @@ public class PersonController {
     @LogMethod
     @PostMapping
     public Person savePerson(@RequestBody Person person) {
+        sqsService.sendMessage( person.toString() );
         return personService.save(person);
     }
 
