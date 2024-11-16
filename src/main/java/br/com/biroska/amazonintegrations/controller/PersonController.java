@@ -1,5 +1,6 @@
 package br.com.biroska.amazonintegrations.controller;
 
+import br.com.biroska.amazonintegrations.integration.aws.sqs.SqsMessageListener;
 import br.com.biroska.amazonintegrations.integration.aws.sqs.SqsMessageService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import br.com.biroska.amazonintegrations.person.model.Contact;
@@ -21,10 +22,12 @@ public class PersonController {
     private final ContactService contactService;
 
     private final SqsMessageService sqsService;
+    private final SqsMessageListener listener;
 
     @LogMethod
     @GetMapping
     public List<Person> listPerson() {
+        listener.queueListener("");
         return personService.findAll();
     }
 
