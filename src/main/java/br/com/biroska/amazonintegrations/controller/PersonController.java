@@ -6,6 +6,7 @@ import br.com.biroska.amazonintegrations.person.model.Contact;
 import br.com.biroska.amazonintegrations.person.model.Person;
 import br.com.biroska.amazonintegrations.person.service.ContactService;
 import br.com.biroska.amazonintegrations.person.service.PersonService;
+import br.com.biroska.amazonintegrations.util.ConverterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class PersonController {
     @LogMethod
     @PostMapping
     public Person savePerson(@RequestBody Person person) {
-        sqsService.sendMessage( person.toString() );
+        sqsService.sendMessage(ConverterUtils.toJson( person ) );
         return personService.save(person);
     }
 
