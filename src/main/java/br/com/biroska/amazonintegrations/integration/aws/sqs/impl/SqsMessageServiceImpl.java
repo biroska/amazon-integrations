@@ -1,37 +1,39 @@
 package br.com.biroska.amazonintegrations.integration.aws.sqs.impl;
 
 import br.com.biroska.amazonintegrations.integration.aws.sqs.SqsMessageService;
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.model.SendMessageRequest;
-import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.biroska.amazonintegrations.logging.LogMethod;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class SqsMessageServiceImpl implements SqsMessageService {
 
-    private final QueueMessagingTemplate queueMessagingTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(SqsMessageServiceImpl.class);
 
-    private final AmazonSQSAsync amazonSQSAsync;
+    @Value("${aws.sqs.endpoint.person-queue}")
+    private String sqsEndpoint;
 
-    @Autowired
-    public SqsMessageServiceImpl(AmazonSQSAsync amazonSQSAsync) {
-        this.queueMessagingTemplate = new QueueMessagingTemplate(amazonSQSAsync);
-        this.amazonSQSAsync = amazonSQSAsync;
+    private final SqsTemplate sqsTemplate;
+
+    public SqsMessageServiceImpl(SqsTemplate sqsTemplate) {
+        this.sqsTemplate = sqsTemplate;
     }
 
     @Override
-    public void sendMessage(String message) {
+    @LogMethod
+    public Boolean sendMessage(String message) {
 
-        SendMessageRequest sendMessageRequest = new SendMessageRequest()
-                .withQueueUrl("https://xxxxx.fifo")
-                .withMessageBody( message)
-                .withMessageGroupId( UUID.randomUUID().toString() )
+        logger.info("Mensagem enviada para o SQS: {}", message);
 
-                .withMessageDeduplicationId(UUID.randomUUID().toString());
-
-        amazonSQSAsync.sendMessage(sendMessageRequest);
+        try {
+            sqsTemplate.send( sqsEndpoint, message);
+        } catch (Exception e ){
+            logger.error("Ocorreu um erro ao enviar a mensagem para o SQS: {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 }

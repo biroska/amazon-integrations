@@ -1,29 +1,28 @@
 package br.com.biroska.amazonintegrations.integration.aws.sqs.impl;
 
 import br.com.biroska.amazonintegrations.integration.aws.sqs.SqsMessageListener;
-import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
+import br.com.biroska.amazonintegrations.logging.LogMethod;
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.AllArgsConstructor;
-import org.springframework.messaging.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class SqsMessageListenerImpl implements SqsMessageListener {
 
-    private final QueueMessagingTemplate queueMessagingTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(SqsMessageListenerImpl.class);
 
     @Override
-//    @SqsListener("person-queue.fifo")
+    @LogMethod
+    @SqsListener("${aws.sqs.person-queue}")
     public void queueListener(String message){
-
         try {
 
-            Message<?> received1 = queueMessagingTemplate.receive("person-queue.fifo");
-            System.out.println("received1 = " + received1);
-
-            System.out.println("message = " + message);
-        } catch (Exception e) {
-            System.err.println("e = " + e.getMessage());
+            logger.info("Mensagem recebida from SQS: {}", message);
+        } catch (Exception e){
+            logger.error("Ocorreu um erro ao receber a mensagem do SQS: {}", e.getMessage(), e);
         }
     }
 }
