@@ -33,7 +33,6 @@ public class PersonController {
     @PostMapping
     public Person savePerson(@RequestBody Person person) {
         sqsService.sendMessage(ConverterUtils.toJson( person ) );
-//        return personService.save(person);
         return person;
     }
 
