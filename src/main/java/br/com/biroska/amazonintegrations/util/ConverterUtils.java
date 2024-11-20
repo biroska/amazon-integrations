@@ -1,6 +1,5 @@
 package br.com.biroska.amazonintegrations.util;
 
-import br.com.biroska.amazonintegrations.integration.aws.sqs.impl.SqsMessageListenerImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,6 +20,10 @@ public class ConverterUtils {
 
     static {
         mapper.registerModule(new JavaTimeModule());
+    }
+
+    public static ObjectMapper getMapper(){
+        return mapper;
     }
 
     public static LocalDate stringToLocalDate(String dateString) {
