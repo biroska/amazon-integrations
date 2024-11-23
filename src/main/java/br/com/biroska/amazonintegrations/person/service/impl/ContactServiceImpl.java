@@ -4,8 +4,8 @@ import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacad
 import br.com.biroska.amazonintegrations.integration.database.model.ContactEntity;
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
 import br.com.biroska.amazonintegrations.person.adapter.ContactAdapter;
-import br.com.biroska.amazonintegrations.person.service.ContactService;
 import br.com.biroska.amazonintegrations.person.model.Contact;
+import br.com.biroska.amazonintegrations.person.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +26,4 @@ public class ContactServiceImpl implements ContactService {
         return ContactAdapter.adapt(personEntity.getContacts());
     }
 
-    @Override
-    public Contact update(Contact contact) {
-        return null;
-    }
-
-    @Override
-    public Boolean delete(Contact contact) {
-        return null;
-    }
 }

@@ -1,6 +1,6 @@
 package br.com.biroska.amazonintegrations.integration.aws.s3;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -12,10 +12,10 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.utils.AttributeMap;
 
 @Configuration
+@RequiredArgsConstructor
 public class S3Config {
 
-    @Autowired
-    private StaticCredentialsProvider awsCredentialsProvider;
+    private final StaticCredentialsProvider awsCredentialsProvider;
 
     @Bean
     public S3AsyncClient s3AsyncClient(){
@@ -24,10 +24,6 @@ public class S3Config {
         final AttributeMap attributeMap = AttributeMap.builder()
                 .put(SdkHttpConfigurationOption.TRUST_ALL_CERTIFICATES, true)
                 .build();
-
-/*        return S3Client.builder()
-                .httpClient(sdkHttpClient)
-                .build();*/
 
         final SdkAsyncHttpClient sdkAsyncHttpClient = new DefaultSdkAsyncHttpClientBuilder().buildWithDefaults(attributeMap);
 

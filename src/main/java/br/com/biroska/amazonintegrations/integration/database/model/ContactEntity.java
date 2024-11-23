@@ -16,9 +16,4 @@ public class ContactEntity {
     private String name;
 
     private String phone;
-
-    public void updateFields(ContactEntity entity) {
-        this.name = entity.getName();
-        this.phone = entity.getPhone();
-    }
 }

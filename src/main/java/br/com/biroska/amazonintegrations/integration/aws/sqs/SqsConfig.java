@@ -1,7 +1,7 @@
 package br.com.biroska.amazonintegrations.integration.aws.sqs;
 
 import io.awspring.cloud.sqs.operations.SqsTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -9,10 +9,10 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
 @Configuration
+@RequiredArgsConstructor
 public class SqsConfig {
 
-    @Autowired
-    private StaticCredentialsProvider awsCredentialsProvider;
+    private final StaticCredentialsProvider awsCredentialsProvider;
 
     @Bean
     public SqsAsyncClient sqsAsyncClient(){
