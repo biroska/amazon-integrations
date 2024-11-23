@@ -3,7 +3,6 @@ package br.com.biroska.amazonintegrations.file.service.impl;
 import br.com.biroska.amazonintegrations.file.service.FileService;
 import br.com.biroska.amazonintegrations.integration.aws.s3.S3FileService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
-import br.com.biroska.amazonintegrations.person.model.Person;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,8 +22,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @LogMethod
-    public List<Person> listAll() {
-        return null;
+    public List<String> listAll() {
+        return s3Service.listAll();
     }
 
     @Override

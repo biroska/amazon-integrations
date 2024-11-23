@@ -2,7 +2,6 @@ package br.com.biroska.amazonintegrations.controller;
 
 import br.com.biroska.amazonintegrations.file.service.FileService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
-import br.com.biroska.amazonintegrations.person.model.Person;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +20,8 @@ public class FileController {
 
     @LogMethod
     @GetMapping
-    public List<Person> listPerson() {
-        return null;
+    public List<String> listFiles() {
+        return fileService.listAll();
     }
 
     @LogMethod
