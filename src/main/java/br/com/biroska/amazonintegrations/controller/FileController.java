@@ -1,12 +1,10 @@
 package br.com.biroska.amazonintegrations.controller;
 
 import br.com.biroska.amazonintegrations.file.service.FileService;
+import br.com.biroska.amazonintegrations.file.service.model.FileDownload;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,6 +26,12 @@ public class FileController {
     @PostMapping
     public String fileUpload(MultipartFile file) {
         return fileService.upload( file );
+    }
+
+    @LogMethod
+    @PostMapping("/download")
+    public String fileDownload(@RequestBody FileDownload fileDownload) {
+        return fileService.download( fileDownload );
     }
 
 }

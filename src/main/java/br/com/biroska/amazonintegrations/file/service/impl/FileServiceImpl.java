@@ -1,6 +1,7 @@
 package br.com.biroska.amazonintegrations.file.service.impl;
 
 import br.com.biroska.amazonintegrations.file.service.FileService;
+import br.com.biroska.amazonintegrations.file.service.model.FileDownload;
 import br.com.biroska.amazonintegrations.integration.aws.s3.S3FileService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -37,5 +39,14 @@ public class FileServiceImpl implements FileService {
         }
 
         return StringUtils.EMPTY;
+    }
+
+    @Override
+    @LogMethod
+    public String download(FileDownload fileDownload) {
+
+        Path path = Path.of(fileDownload.path() );
+
+        return s3Service.download(fileDownload.filename(), path );
     }
 }
