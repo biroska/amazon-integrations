@@ -11,4 +11,6 @@ public interface S3FileService {
     List<String> listAll();
 
     String download(String s3Filename, Path downloadPath);
+
+    Boolean delete(String fileDelete );
 }

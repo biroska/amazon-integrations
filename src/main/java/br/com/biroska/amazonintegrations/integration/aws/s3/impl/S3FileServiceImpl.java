@@ -66,8 +66,8 @@ public class S3FileServiceImpl implements S3FileService {
         return StringUtils.EMPTY;
     }
 
-    @LogMethod
     @Override
+    @LogMethod
     public String download(String s3Filename, Path downloadPath) {
 
         Path pathResolved = null;
@@ -111,6 +111,40 @@ public class S3FileServiceImpl implements S3FileService {
         return key;
     }
 
+    @Override
+    @LogMethod
+    public Boolean delete(String s3Filename) {
+
+        try {
+            List<S3Object> s3Objects = getS3Object();
+
+            Optional<String> keyFile = s3Objects.stream()
+                    .map(S3Object::key)
+                    .filter(s3Filename::equals)
+                    .findFirst();
+
+            String key = keyFile.orElse(null);
+
+            if (StringUtils.isBlank(key)) {
+                logger.warn("Nao foi possivel encontrar arquivos no bucket: {}", bucketName);
+                return Boolean.FALSE;
+            }
+
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                                                        .bucket(bucketName)
+                                                        .key(s3Filename).build();
+
+            CompletableFuture<DeleteObjectResponse> future = s3AsyncClient.deleteObject(deleteObjectRequest);
+            future.get();
+            return future.isDone();
+
+        } catch(S3Exception | ExecutionException | InterruptedException e){
+            logger.error("Nao foi possivel excluir o arquivo: {}", s3Filename, e);
+        }
+
+        return Boolean.FALSE;
+    }
+
     private List<S3Object> getS3Object() {
 
         List<S3Object> EMPTY_LIST = new ArrayList<>();
@@ -135,6 +169,4 @@ public class S3FileServiceImpl implements S3FileService {
         return EMPTY_LIST;
 
     }
-
-
 }

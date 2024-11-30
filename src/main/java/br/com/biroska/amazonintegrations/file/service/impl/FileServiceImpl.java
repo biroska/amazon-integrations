@@ -1,6 +1,7 @@
 package br.com.biroska.amazonintegrations.file.service.impl;
 
 import br.com.biroska.amazonintegrations.file.service.FileService;
+import br.com.biroska.amazonintegrations.file.service.model.FileDelete;
 import br.com.biroska.amazonintegrations.file.service.model.FileDownload;
 import br.com.biroska.amazonintegrations.integration.aws.s3.S3FileService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
@@ -48,5 +49,11 @@ public class FileServiceImpl implements FileService {
         Path path = Path.of(fileDownload.path() );
 
         return s3Service.download(fileDownload.filename(), path );
+    }
+
+    @Override
+    public Boolean delete(FileDelete fileDelete) {
+
+        return s3Service.delete( fileDelete.filename() );
     }
 }

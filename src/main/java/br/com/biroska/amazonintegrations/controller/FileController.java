@@ -1,6 +1,7 @@
 package br.com.biroska.amazonintegrations.controller;
 
 import br.com.biroska.amazonintegrations.file.service.FileService;
+import br.com.biroska.amazonintegrations.file.service.model.FileDelete;
 import br.com.biroska.amazonintegrations.file.service.model.FileDownload;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +35,9 @@ public class FileController {
         return fileService.download( fileDownload );
     }
 
+    @LogMethod
+    @PostMapping("/delete")
+    public Boolean fileDelete(@RequestBody FileDelete fileDelete) {
+        return fileService.delete( fileDelete );
+    }
 }
