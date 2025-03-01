@@ -1,0 +1,23 @@
+# Docker compose para subir servicos da AWS via localstack
+# (Sobe o locakstack) docker-compose up -d
+# (expoe o commandline para uso do awscli)  docker exec -it localstack sh
+# (Configurar as credenciais) aws configure
+#       Cria uma access Key
+#       Cria uma secret Key
+#       Seleciona a regiao: sa-east-1
+#       Seleciona o formato de saida: json
+# Cria um SQS: aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name sample-queue.fifo --attributes FifoQueue=true
+# Cria um S3 Bucket: aws s3 mb s3://mybucket --endpoint-url=http://localhost:4566
+version: '3.7'
+services:
+  aws:
+    image: 'localstack/localstack'
+    container_name: 'localstack'
+    environment:
+      - SERVICES=sqs,s3
+      - DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_REGION=us-east-1
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    ports:
+      - '4566:4566'
