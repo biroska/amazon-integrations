@@ -1,16 +1,40 @@
+# Docker compose para subir servicos da AWS via localstack
+# (Sobe o locakstack) docker-compose up -d
+# (expoe o commandline para uso do awscli)  docker exec -it localstack sh
+# (Configurar as credenciais) aws configure
+#       Cria uma access Key //
+#       Cria uma secret Key
+#       Seleciona a regiao: sa-east-1
+#       Seleciona o formato de saida: json
+# Cria um SQS: aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name person-queue.fifo --attributes FifoQueue=true,ContentBasedDeduplication=true
+# Cria um S3 Bucket: aws s3 mb s3://person-study --endpoint-url=http://localhost:4566
+#
+# Acessar o Mongosh via linha de comando: docker exec -it mongoDB mongosh -u root -p root_pwd
+# Criar o DB:  use Person
+# Criar o usuario+roles: db.createUser({ user: "study", pwd: "study_pwd", roles: [{ role: "readWrite", db: "Person" }] });
+# Verificar a criacao do usuario:  show users
+version: '3.7'
 services:
-  mongodb:
-    image: 'mongo:latest'
+  aws:
+    image: 'localstack/localstack:latest'
+    container_name: 'localstack'
     environment:
-      - 'MONGO_INITDB_DATABASE=mydatabase'
-      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
-      - 'MONGO_INITDB_ROOT_USERNAME=root'
+      - SERVICES=sqs,s3,docdb
+      - DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_REGION=us-east-1
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
     ports:
-      - '27017'
-  rabbitmq:
-    image: 'rabbitmq:latest'
+      - '4566:4566'
+  mongo:
+    image: mongo:latest
+    container_name: 'mongoDB'
     environment:
-      - 'RABBITMQ_DEFAULT_PASS=secret'
-      - 'RABBITMQ_DEFAULT_USER=myuser'
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root_pwd
     ports:
-      - '5672'
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
