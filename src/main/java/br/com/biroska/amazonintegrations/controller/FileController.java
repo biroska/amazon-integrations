@@ -6,6 +6,7 @@ import br.com.biroska.amazonintegrations.file.service.model.FileDelete;
 import br.com.biroska.amazonintegrations.file.service.model.FileDownload;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,25 +21,25 @@ public class FileController implements FileApi {
 
     @LogMethod
     @GetMapping
-    public List<String> listFiles() {
-        return fileService.listAll();
+    public ResponseEntity<List<String>> listFiles() {
+        return ResponseEntity.ofNullable( fileService.listAll() );
     }
 
     @LogMethod
     @PostMapping
-    public String fileUpload(MultipartFile file) {
-        return fileService.upload( file );
+    public ResponseEntity<String> fileUpload(MultipartFile file) {
+        return ResponseEntity.ofNullable( fileService.upload( file ) );
     }
 
     @LogMethod
     @PostMapping("/download")
-    public String fileDownload(@RequestBody FileDownload fileDownload) {
-        return fileService.download( fileDownload );
+    public ResponseEntity<String> fileDownload(@RequestBody FileDownload fileDownload) {
+        return ResponseEntity.ofNullable(fileService.download( fileDownload ) );
     }
 
     @LogMethod
     @PostMapping("/delete")
-    public Boolean fileDelete(@RequestBody FileDelete fileDelete) {
-        return fileService.delete( fileDelete );
+    public ResponseEntity<Boolean> fileDelete(@RequestBody FileDelete fileDelete) {
+        return ResponseEntity.ofNullable(fileService.delete( fileDelete ) );
     }
 }

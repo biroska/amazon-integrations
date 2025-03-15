@@ -175,9 +175,12 @@
                             <apiPackage>br.com.biroska.amazonintegrations.api</apiPackage>
                             <modelPackage>br.com.biroska.amazonintegrations.model</modelPackage>
                             <configOptions>
-                                <delegatePattern>true</delegatePattern>
+                                <useLombok>true</useLombok>
+                                <lombokBuilder>true</lombokBuilder>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useSpringBoot3>true</useSpringBoot3>
+                                <delegatePattern>true</delegatePattern>
+                                <useResponseEntity>true</useResponseEntity>
                             </configOptions>
                         </configuration>
                     </execution>

@@ -203,6 +203,7 @@ paths:
       description: Upload a file to a S3 Bucket
       operationId: fileUpload
       requestBody:
+        description: Upload a file to a S3 Bucket
         required: true
         content:
           multipart/form-data:
@@ -219,10 +220,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  example: 'folde-name/filename.ext'
+                type: string
+                example: 'folde-name/filename.ext'
         '400':
           description: Invalid input
         '422':
@@ -247,10 +246,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  example: 'folde-name/filename.ext'
+                type: string
+                example: 'folde-name/filename.ext'
         '400':
           description: Invalid input
         '422':
@@ -278,59 +275,13 @@ paths:
         - aws-integrations-auth:
             - write:pets
             - read:pets
-
-
-
 components:
   schemas:
-    Order:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-      xml:
-        name: order
-    Category:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 1
-        name:
-          type: string
-          example: Dogs
-      xml:
-        name: category
     User:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
           example: 10
         username:
           type: string
@@ -355,8 +306,6 @@ components:
           description: User Status
           format: int32
           example: 1
-      xml:
-        name: user
     Contact:
       type: object
       properties:
@@ -392,23 +341,19 @@ components:
           description: Files name
           example: 'filename.ext'
     Person:
-      required:
-        - name
-        - age
-        - birthdate
-        - gender
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
           example: 10
         name:
           type: string
           description: Person's name
           example: 'Joe Doe'
-        category:
-          $ref: '#/components/schemas/Category'
+        contact:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
         age:
           type: integer
           description: Person's age
@@ -424,15 +369,6 @@ components:
             - male
             - female
   requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Person'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Person'
     UserArray:
       description: List of user object
       content:
