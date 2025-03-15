@@ -16,12 +16,12 @@ externalDocs:
 servers:
   - url: http://localhost:8080/aws-integration
 tags:
-  - name: person
+  - name: Person
     description: Everything about Person's in our application
     externalDocs:
       description: Find out more
       url: http://swagger.io
-  - name: file
+  - name: File
     description: File management using Amazon's S3
     externalDocs:
       description: File management using Amazon's S3
@@ -30,7 +30,7 @@ paths:
   /person:
     get:
       tags:
-        - person
+        - Person
       summary: Finds all persons in application
       description: Finds all persons in application
       operationId: all
@@ -51,7 +51,7 @@ paths:
             - read:pets
     post:
       tags:
-        - person
+        - Person
       summary: Add a new Person to the application.
       description: Add a new Person to the application.
       operationId: addPerson
@@ -79,7 +79,7 @@ paths:
             - read:pets
     put:
       tags:
-        - person
+        - Person
       summary: Update an existing Person by Id
       description: Update an existing Person by Id
       operationId: updatePerson
@@ -110,7 +110,7 @@ paths:
   /person/{personId}:
     delete:
       tags:
-        - person
+        - Person
       summary: Deletes a Person
       description: delete a Person from application
       operationId: deletePerson
@@ -140,7 +140,7 @@ paths:
   /person/{personId}/contact:
     post:
       tags:
-        - person
+        - Person
       summary: Add a contact to a existing Person
       description: Add a contact to a existing Person
       operationId: addContact
@@ -177,54 +177,110 @@ paths:
         - aws-integrations-auth:
             - write:pets
             - read:pets
-  /file/inventory:
+  /file:
     get:
       tags:
-        - file
-      summary: Returns pet inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
+        - File
+      summary: Returns all file's in Bucket
+      description: Returns all file's in Bucket
+      operationId: listFiles
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
+                type: array
+                items:
+                  type: string
+                  example: 'folde-name/filename.ext'
       security:
         - api_key: []
-  /file/order:
     post:
       tags:
-        - file
-      summary: Place an order for a pet
-      description: Place a new order in the store
-      operationId: placeOrder
+        - File
+      summary: Upload a file to a S3 Bucket
+      description: Upload a file to a S3 Bucket
+      operationId: fileUpload
       requestBody:
+        required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: O arquivo a ser enviado.
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                type: array
+                items:
+                  type: string
+                  example: 'folde-name/filename.ext'
         '400':
           description: Invalid input
         '422':
           description: Validation exception
+  /file/download:
+    post:
+      tags:
+        - File
+      summary: Download's a file from S3 Bucket
+      description: Download's a file from S3 Bucket
+      operationId: fileUpload
+      requestBody:
+        description: Download's a file from S3 Bucket
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileDownload'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: 'folde-name/filename.ext'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /file/delete:
+    post:
+      tags:
+        - File
+      summary: Remove's a file from S3 Bucket
+      description: Remove's a file from S3 Bucket
+      operationId: fileDelete
+      requestBody:
+        description: Download's a file from S3 Bucket
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileDelete'
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid pet value
+      security:
+        - aws-integrations-auth:
+            - write:pets
+            - read:pets
+
+
+
 components:
   schemas:
     Order:
@@ -312,6 +368,29 @@ components:
           type: string
           description: Contact's phone
           example: 'Joe Doe'
+    FileDownload:
+      required:
+        - path
+        - filename
+      type: object
+      properties:
+        path:
+          type: string
+          description: Local folder to download a file
+          example: './some/local/folder'
+        filename:
+          type: string
+          description: Files name
+          example: 'filename.ext'
+    FileDelete:
+      required:
+        - filename
+      type: object
+      properties:
+        filename:
+          type: string
+          description: Files name
+          example: 'filename.ext'
     Person:
       required:
         - name
@@ -344,8 +423,6 @@ components:
           enum:
             - male
             - female
-      xml:
-        name: pet
   requestBodies:
     Pet:
       description: Pet object that needs to be added to the store
