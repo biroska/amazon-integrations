@@ -1,5 +1,6 @@
 package br.com.biroska.amazonintegrations.controller;
 
+import br.com.biroska.amazonintegrations.api.FileApi;
 import br.com.biroska.amazonintegrations.file.service.FileService;
 import br.com.biroska.amazonintegrations.file.service.model.FileDelete;
 import br.com.biroska.amazonintegrations.file.service.model.FileDownload;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/aws-integration/file")
-public class FileController {
+public class FileController implements FileApi {
 
     private final FileService fileService;
 

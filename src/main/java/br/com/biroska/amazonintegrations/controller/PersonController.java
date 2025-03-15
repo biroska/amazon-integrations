@@ -1,5 +1,6 @@
 package br.com.biroska.amazonintegrations.controller;
 
+import br.com.biroska.amazonintegrations.api.PersonApi;
 import br.com.biroska.amazonintegrations.integration.aws.sqs.SqsMessageService;
 import br.com.biroska.amazonintegrations.logging.LogMethod;
 import br.com.biroska.amazonintegrations.person.model.Contact;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/aws-integration/person")
-public class PersonController {
+public class PersonController implements PersonApi {
 
     private final PersonService personService;
 
