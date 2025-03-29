@@ -9,6 +9,7 @@ import br.com.biroska.amazonintegrations.person.model.Contact;
 import br.com.biroska.amazonintegrations.person.service.ContactService;
 import br.com.biroska.amazonintegrations.person.service.PersonService;
 import br.com.biroska.amazonintegrations.util.ConverterUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,7 +43,7 @@ public class PersonController implements PersonApi {
 
     @LogMethod
     @PostMapping
-    public ResponseEntity<Person> savePerson(@RequestBody Person person) {
+    public ResponseEntity<Person> savePerson(@RequestBody @Valid Person person) {
         sqsService.sendMessage(ConverterUtils.toJson( person ) );
         return ResponseEntity.ofNullable( person );
     }

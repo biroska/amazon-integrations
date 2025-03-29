@@ -285,24 +285,31 @@ components:
           example: 10
         username:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           example: theUser
         firstName:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           example: John
         lastName:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           example: James
         email:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           example: john@email.com
         password:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           example: '12345'
         phone:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           example: '12345'
         userStatus:
           type: integer
+          x-field-extra-annotation: '@NotNull'
           description: User Status
           format: int32
           example: 1
@@ -311,10 +318,12 @@ components:
       properties:
         name:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           description: Contact's name
           example: 'Joe Doe'
         phone:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           description: Contact's phone
           example: 'Joe Doe'
     FileDownload:
@@ -348,6 +357,7 @@ components:
           example: 10
         name:
           type: string
+          x-field-extra-annotation: '@NotEmpty'
           description: Person's name
           example: 'Joe Doe'
         contact:
@@ -356,13 +366,16 @@ components:
             $ref: '#/components/schemas/Contact'
         age:
           type: integer
+          x-field-extra-annotation: '@NotNull'
           description: Person's age
           example: 31
         birthdate:
           type: string
+          x-field-extra-annotation: '@NotNull'
           description: Person's
-          example: '1985/06/29'
+          example: '1985-06-29'
         gender:
+          x-field-extra-annotation: '@NotNull'
           type: string
           description: Person's gender
           enum:
