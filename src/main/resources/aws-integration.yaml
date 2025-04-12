@@ -47,8 +47,8 @@ paths:
           description: Invalid status value
       security:
         - aws-integrations-auth:
-            - write:pets
-            - read:pets
+            - write:owner
+            - read:user
     post:
       tags:
         - Person
@@ -57,11 +57,11 @@ paths:
       operationId: savePerson
       requestBody:
         description: Add a new Person to the application.
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Person'
-        required: true
       responses:
         '201':
           description: Person Created
@@ -75,8 +75,8 @@ paths:
           description: Validation exception
       security:
         - aws-integrations-auth:
-            - write:pets
-            - read:pets
+            - write:owner
+            - read:user
     put:
       tags:
         - Person
@@ -85,11 +85,11 @@ paths:
       operationId: updatePerson
       requestBody:
         description: Update an existent Person in the application
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Person'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -100,13 +100,14 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Pet not found
+          description: Person
+            not found
         '422':
           description: Validation exception
       security:
         - aws-integrations-auth:
-            - write:pets
-            - read:pets
+            - write:owner
+            - read:user
   /person/{personId}:
     delete:
       tags:
@@ -115,12 +116,6 @@ paths:
       description: delete a Person from application
       operationId: deletePerson
       parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
         - name: personId
           in: path
           description: Person's id to delete
@@ -132,11 +127,11 @@ paths:
         '200':
           description: Successful operation
         '400':
-          description: Invalid pet value
+          description: Invalid person value
       security:
         - aws-integrations-auth:
-            - write:pets
-            - read:pets
+            - write:owner
+            - read:user
   /person/{personId}/contact:
     post:
       tags:
@@ -171,12 +166,12 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Pet not found
+          description: Invalid person contact
       security:
         - api_key: []
         - aws-integrations-auth:
-            - write:pets
-            - read:pets
+            - write:owner
+            - read:user
   /file:
     get:
       tags:
@@ -273,8 +268,8 @@ paths:
           description: Invalid pet value
       security:
         - aws-integrations-auth:
-            - write:pets
-            - read:pets
+            - write:owner
+            - read:user
 components:
   schemas:
     User:
@@ -351,13 +346,17 @@ components:
           example: 'filename.ext'
     Person:
       type: object
+      required: # Define os campos obrigatórios
+        - name
+        - age
+        - birthdate
+        - gender
       properties:
         id:
           type: string
           example: 10
         name:
           type: string
-          x-field-extra-annotation: '@NotEmpty'
           description: Person's name
           example: 'Joe Doe'
         contact:
@@ -366,16 +365,13 @@ components:
             $ref: '#/components/schemas/Contact'
         age:
           type: integer
-          x-field-extra-annotation: '@NotNull'
           description: Person's age
           example: 31
         birthdate:
           type: string
-          x-field-extra-annotation: '@NotNull'
           description: Person's
           example: '1985-06-29'
         gender:
-          x-field-extra-annotation: '@NotNull'
           type: string
           description: Person's gender
           enum:
@@ -395,10 +391,10 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          authorizationUrl: https://biroska.swagger.io/oauth/authorize
           scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
+            write:owner: User with owner privilegies to edit collections
+            read:user: User with read privilegies to access collections
     api_key:
       type: apiKey
       name: api_key

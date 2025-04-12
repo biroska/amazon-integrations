@@ -3,8 +3,8 @@ package br.com.biroska.amazonintegrations.person.service.impl;
 import br.com.biroska.amazonintegrations.integration.database.facade.PersonFacade;
 import br.com.biroska.amazonintegrations.integration.database.model.ContactEntity;
 import br.com.biroska.amazonintegrations.integration.database.model.PersonEntity;
-import br.com.biroska.amazonintegrations.person.adapter.ContactAdapter;
-import br.com.biroska.amazonintegrations.person.model.Contact;
+import br.com.biroska.amazonintegrations.model.Contact;
+import br.com.biroska.amazonintegrations.person.adapter.ContactApiAdapter;
 import br.com.biroska.amazonintegrations.person.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,10 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> addContact(String personId, Contact contact) {
 
-        ContactEntity entity = ContactAdapter.adapt(contact);
+        ContactEntity entity = ContactApiAdapter.adaptToEntity(contact);
 
         PersonEntity personEntity = facade.addContact(personId, entity);
-        return ContactAdapter.adapt(personEntity.getContacts());
-    }
 
+        return ContactApiAdapter.adaptFromEntity(personEntity.getContacts());
+    }
 }

@@ -1,5 +1,6 @@
 package br.com.biroska.amazonintegrations.person.adapter;
 
+import br.com.biroska.amazonintegrations.integration.database.model.ContactEntity;
 import br.com.biroska.amazonintegrations.person.model.Contact;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -31,7 +32,14 @@ public class ContactApiAdapter {
     public static Contact adapt(br.com.biroska.amazonintegrations.model.Contact contact) {
 
         return new Contact(contact.getName(), contact.getPhone());
+    }
 
+    public static ContactEntity adaptToEntity(br.com.biroska.amazonintegrations.model.Contact contact) {
+
+        return ContactEntity.builder()
+                .name( contact.getName() )
+                .phone( contact.getPhone() )
+                .build();
     }
 
     public static List<Contact> adaptApiList(List<br.com.biroska.amazonintegrations.model.Contact> contacts) {
@@ -41,5 +49,21 @@ public class ContactApiAdapter {
         }
 
         return contacts.stream().map( ContactApiAdapter::adapt ).toList();
+    }
+
+    public static List<br.com.biroska.amazonintegrations.model.Contact> adaptFromEntity(List<ContactEntity> contacts) {
+
+        if (CollectionUtils.isEmpty( contacts ) ){
+            return new ArrayList<>();
+        }
+
+        return contacts.stream().map( ContactApiAdapter::adapt ).toList();
+    }
+
+    public static br.com.biroska.amazonintegrations.model.Contact adapt(ContactEntity contact) {
+
+        return new br.com.biroska.amazonintegrations.model.Contact()
+                .name( contact.getName() )
+                .phone( contact.getPhone() );
     }
 }

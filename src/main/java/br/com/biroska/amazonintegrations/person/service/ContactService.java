@@ -1,6 +1,7 @@
 package br.com.biroska.amazonintegrations.person.service;
 
-import br.com.biroska.amazonintegrations.person.model.Contact;
+
+import br.com.biroska.amazonintegrations.model.Contact;
 
 import java.util.List;
 

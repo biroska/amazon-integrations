@@ -1,4 +1,4 @@
-package br.com.biroska.amazonintegrations.handler;
+package br.com.biroska.amazonintegrations.exception.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +20,23 @@ public class ValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
 
-        List<String> errors = new ArrayList<>();
+        Map<String, List<String>> fieldErrors = new HashMap<>();
 
-        // Itera sobre os erros para montar a lista de atributo: Msg de erro
         ex.getBindingResult().getAllErrors().forEach(error -> {
 
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.add(fieldName + ": " + errorMessage);
+            if (error instanceof FieldError) {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
 
+                fieldErrors.computeIfAbsent(fieldName, _ -> new ArrayList<>()).add(errorMessage);
+            } else {
+                String objectName = error.getObjectName();
+                String errorMessage = error.getDefaultMessage();
+                fieldErrors.computeIfAbsent(objectName + "_globalErrors", _ -> new ArrayList<>()).add(errorMessage);
+            }
         });
 
-        Map<String, List<String>> response = new HashMap<>();
-        response.put("erros", errors);
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
     }
 
 }

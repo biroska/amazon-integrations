@@ -181,7 +181,8 @@
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <delegatePattern>true</delegatePattern>
                                 <useResponseEntity>true</useResponseEntity>
-                                <useBeanValidation>true</useBeanValidation>
+                                <useJakartaEe>true</useJakartaEe>           <!-- Importante para @Valid e constraints jakarta.* -->
+                                <useBeanValidation>true</useBeanValidation> <!-- ESSENCIAL para gerar @Valid -->
                             </configOptions>
                         </configuration>
                     </execution>
