@@ -369,6 +369,7 @@ components:
           example: 31
         birthdate:
           type: string
+          format: date
           description: Person's
           example: '1985-06-29'
         gender:

@@ -2,7 +2,6 @@ package br.com.biroska.amazonintegrations.person.adapter;
 
 import br.com.biroska.amazonintegrations.person.model.Contact;
 import br.com.biroska.amazonintegrations.person.model.Person;
-import br.com.biroska.amazonintegrations.util.ConverterUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ public class PersonApiAdapter {
 
     public static Person adapt(br.com.biroska.amazonintegrations.model.Person person) {
 
-        LocalDate birthDate = ConverterUtils.stringToLocalDate(person.getBirthdate());
+        LocalDate birthDate =person.getBirthdate();
         List<Contact> contacts = ContactApiAdapter.adaptApiList( person.getContact() );
 
         return new Person(person.getId(), person.getName(), person.getAge(), birthDate , person.getGender().getValue(), contacts );
@@ -31,7 +30,7 @@ public class PersonApiAdapter {
         return apiPerson.id( person.id() )
                 .name( person.name() )
                 .age( person.age() )
-                .birthdate( person.birthdate().toString() )
+                .birthdate( person.birthdate() )
                 .gender(br.com.biroska.amazonintegrations.model.Person.GenderEnum.fromValue( person.gender() ) )
                 .contact( ContactApiAdapter.adapt( person.contacts() ) );
     }

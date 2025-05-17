@@ -26,6 +26,7 @@ public class PersonController implements PersonApi {
     private final ContactService contactService;
 
     private final SqsMessageService sqsService;
+
     @Override
     @LogMethod
     public ResponseEntity<List<Person>> listPerson() {
